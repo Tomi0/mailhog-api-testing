@@ -18,7 +18,7 @@
   "autoload": {
     "files": [],
     "psr-4": {
-      "MailhogApi\\": "src/Mailhog"
+      "Mailhog\\": "src/Mailhog"
     }
   },
   "autoload-dev": {

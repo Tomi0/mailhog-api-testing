@@ -1,10 +1,8 @@
 <?php
 
+namespace Mailhog;
 
 trait MailhogTesting
 {
-    public function __invoke()
-    {
 
-    }
 }
