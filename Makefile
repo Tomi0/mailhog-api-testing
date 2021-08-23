@@ -1,6 +1,6 @@
 test:
-	docker run --rm -d --name umt -p 1025:1025 -p 8025:8025 ubuntu-mailhog-testing:latest "/root/go/bin/MailHog"
-	docker exec umt sleep 2
+	docker run --rm -d --name umt -p 1025:1025 -p 8025:8025 -v $(PWD):/var/www/html -w /var/www/html ubuntu-mailhog-testing:latest "/root/go/bin/MailHog"
+	-docker exec umt php ./vendor/bin/phpunit tests
 	docker stop umt
 composer-exec:
 	docker run --rm --interactive --tty --volume $(PWD):/app --user $(id -u):$(id -g) composer $(command)

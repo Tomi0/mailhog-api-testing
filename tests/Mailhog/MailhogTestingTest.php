@@ -47,7 +47,6 @@ class MailhogTestingTest extends TestCase
      */
     private function setPhpMailerConfiguration(PHPMailer $PHPMailer): void
     {
-        $PHPMailer->SMTPDebug = SMTP::DEBUG_SERVER;
         $PHPMailer->isSMTP();
         $PHPMailer->Host = $this->host;
         $PHPMailer->Port = $this->port;
