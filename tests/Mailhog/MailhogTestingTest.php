@@ -6,7 +6,6 @@ namespace Tests\Mailhog;
 
 use Mailhog\MailhogTesting;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use Tests\TestCase;
 
 class MailhogTestingTest extends TestCase
@@ -16,7 +15,7 @@ class MailhogTestingTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpMailhogEnviroment('localhost', 1025);
+        $this->setUpMailhogEnviroment('localhost', 1025, 8025);
     }
 
     /**
@@ -49,18 +48,20 @@ class MailhogTestingTest extends TestCase
     {
         $PHPMailer->isSMTP();
         $PHPMailer->Host = $this->host;
-        $PHPMailer->Port = $this->port;
+        $PHPMailer->Port = $this->mailPort;
         $PHPMailer->setFrom('mailhogTesting@testing.test', 'Mailhog testing');
     }
 
 
     public function testEnviromentVariablesAreSetCorrectly(): void
     {
-        $expectedPort = 1025;
+        $expectedMailPort = 1025;
+        $expectedWebPort = 8025;
         $expectedHost = '127.0.0.1';
-        $this->setUpMailhogEnviroment($expectedHost, $expectedPort);
+        $this->setUpMailhogEnviroment($expectedHost, $expectedMailPort, $expectedWebPort);
 
-        $this->assertEquals($expectedPort, $this->port);
+        $this->assertEquals($expectedMailPort, $this->mailPort);
+        $this->assertEquals($expectedWebPort, $this->apiPort);
         $this->assertEquals($expectedHost, $this->host);
     }
 
