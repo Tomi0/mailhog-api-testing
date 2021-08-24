@@ -13,6 +13,8 @@ trait MailhogTesting
      * MailhogTesting constructor.
      * @param string $host
      * @param int $mailPort
+     * @param int $apiPort
+     * @param bool $ssl
      */
     protected function setUpMailhogEnviroment(string $host, int $mailPort, int $apiPort, bool $ssl = false)
     {
@@ -31,11 +33,9 @@ trait MailhogTesting
 
         $result = file_get_contents($this->getBaseUrl() . '/v2/search?' . $this->getSerializedUrlParameters($queryParams));
 
-        echo $result;
+        $result = json_decode($result, true);
 
-        var_dump($result);
-
-        return false;
+        return isset($result['count']) && $result['count'] > 0;
     }
 
     private function getBaseUrl(): string
@@ -50,9 +50,9 @@ trait MailhogTesting
         $i = 0;
 
         foreach ($parameters as $key => $value) {
-            $result .= $key . '=' . $value . (++$i !== $numParameters ? '&' : '');
+            $result .= $key . '=' . urlencode($value) . (++$i !== $numParameters ? '&' : '');
         }
 
-        return urlencode($result);
+        return $result;
     }
 }

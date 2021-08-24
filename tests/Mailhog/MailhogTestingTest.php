@@ -5,6 +5,7 @@ namespace Tests\Mailhog;
 
 
 use Mailhog\MailhogTesting;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Tests\TestCase;
 
@@ -19,7 +20,7 @@ class MailhogTestingTest extends TestCase
     }
 
     /**
-     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      */
     private function sendMail($to, string $subject, string $message): void
     {
@@ -42,7 +43,7 @@ class MailhogTestingTest extends TestCase
 
     /**
      * @param PHPMailer $PHPMailer
-     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      */
     private function setPhpMailerConfiguration(PHPMailer $PHPMailer): void
     {
@@ -58,20 +59,57 @@ class MailhogTestingTest extends TestCase
         $expectedMailPort = 1025;
         $expectedWebPort = 8025;
         $expectedHost = '127.0.0.1';
-        $this->setUpMailhogEnviroment($expectedHost, $expectedMailPort, $expectedWebPort);
+        $expectedSsl = true;
+        $this->setUpMailhogEnviroment($expectedHost, $expectedMailPort, $expectedWebPort, $expectedSsl);
 
         $this->assertEquals($expectedMailPort, $this->mailPort);
         $this->assertEquals($expectedWebPort, $this->apiPort);
         $this->assertEquals($expectedHost, $this->host);
+        $this->assertEquals($expectedSsl, $this->ssl);
     }
 
     /**
-     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      */
     public function testMessageExistsByContent(): void
     {
         $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
 
         $this->assertTrue($this->messageExistsByContent('This is the messa'));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testMessageDoesNotExistByContent(): void
+    {
+        $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
+
+        $this->assertFalse($this->messageExistsByContent('This is the message does not exist'));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testFailMailhogApi(): void
+    {
+        // TODO
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetAllMessages(): void
+    {
+        $this->sendMail('test1@test.test', 'Email subject', 'This is the message of the email 1');
+        $this->sendMail('test2@test.test', 'Email subject', 'This is the message of the email 2');
+        $this->sendMail('test3@test.test', 'Email subject', 'This is the message of the email 3');
+
+        // TODO
+    }
+
+    public function testClearInbox(): void
+    {
+        // TODO
     }
 }
