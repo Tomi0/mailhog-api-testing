@@ -94,14 +94,6 @@ class MailhogTestingTest extends TestCase
     }
 
     /**
-     */
-    public function testFailMailhogApi(): void
-    {
-        // TODO
-        $this->assertTrue(true);
-    }
-
-    /**
      * @throws Exception
      * @throws GuzzleException
      */
@@ -119,12 +111,20 @@ class MailhogTestingTest extends TestCase
         $this->assertEquals('Email subject1', $result[2]->getSubject());
     }
 
+    /**
+     * @throws Exception
+     * @throws GuzzleException
+     */
     public function testClearInbox(): void
     {
         $this->sendMail('test1@test.test', 'Email subject1', 'This is the message of the email 1');
         $this->sendMail('test2@test.test', 'Email subject2', 'This is the message of the email 2');
         $this->sendMail('test3@test.test', 'Email subject3', 'This is the message of the email 3');
 
-        $this->assertTrue(true);
+        $this->assertNotEmpty($this->getAllMessages());
+
+        $this->clearInbox();
+
+        $this->assertEmpty($this->getAllMessages());
     }
 }
