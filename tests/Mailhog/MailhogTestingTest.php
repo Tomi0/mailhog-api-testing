@@ -94,6 +94,7 @@ class MailhogTestingTest extends TestCase
     public function testFailMailhogApi(): void
     {
         // TODO
+        $this->assertTrue(true);
     }
 
     /**
@@ -101,15 +102,17 @@ class MailhogTestingTest extends TestCase
      */
     public function testGetAllMessages(): void
     {
-        $this->sendMail('test1@test.test', 'Email subject', 'This is the message of the email 1');
-        $this->sendMail('test2@test.test', 'Email subject', 'This is the message of the email 2');
-        $this->sendMail('test3@test.test', 'Email subject', 'This is the message of the email 3');
+        $this->sendMail('test1@test.test', 'Email subject1', 'This is the message of the email 1');
+        $this->sendMail('test2@test.test', 'Email subject2', 'This is the message of the email 2');
+        $this->sendMail('test3@test.test', 'Email subject3', 'This is the message of the email 3');
 
         // TODO
+        $this->assertTrue(true);
     }
 
     public function testClearInbox(): void
     {
         // TODO
+        $this->assertTrue(true);
     }
 }

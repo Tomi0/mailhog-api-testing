@@ -2,6 +2,9 @@
 
 namespace Mailhog;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+
 trait MailhogTesting
 {
     protected string $host;
@@ -31,11 +34,18 @@ trait MailhogTesting
             'query' => $content,
         ];
 
-        $result = file_get_contents($this->getBaseUrl() . '/v2/search?' . $this->getSerializedUrlParameters($queryParams));
+        $client = new Client();
 
-        $result = json_decode($result, true);
+        $result = $client->request('GET', $this->getBaseUrl() . '/v2/search?' . $this->getSerializedUrlParameters($queryParams));
+
+        $result = json_decode($result->getBody()->getContents(), true);
 
         return isset($result['count']) && $result['count'] > 0;
+    }
+
+    public function clearInbox(): bool
+    {
+        return false; // TODO
     }
 
     private function getBaseUrl(): string
