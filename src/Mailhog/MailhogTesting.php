@@ -27,6 +27,9 @@ trait MailhogTesting
         $this->ssl = $ssl;
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function messageExistsByContent(string $content): bool
     {
         $queryParams = [
@@ -36,21 +39,42 @@ trait MailhogTesting
 
         $client = new Client();
 
-        $result = $client->request('GET', $this->getBaseUrl() . '/v2/search?' . $this->getSerializedUrlParameters($queryParams));
+        $request = $client->request('GET', $this->getBaseUrl() . '/api/v2/search?' . $this->getSerializedUrlParameters($queryParams));
 
-        $result = json_decode($result->getBody()->getContents(), true);
+        $result = json_decode($request->getBody()->getContents(), true);
 
         return isset($result['count']) && $result['count'] > 0;
     }
 
+    /**
+     * @return EmailMessage[]
+     * @throws GuzzleException
+     */
+    public function getAllMessages(): array
+    {
+        $request = (new Client())->request('GET', $this->getBaseUrl() . '/api/v2/messages');
+
+        $messages = [];
+        foreach (json_decode($request->getBody()->getContents(), true)['items'] as $message) {
+            $messages[] = $this->instanceEmailMessage($message);
+        }
+
+        return $messages;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
     public function clearInbox(): bool
     {
-        return false; // TODO
+        $request = (new Client())->request('DELETE', $this->getBaseUrl() . '/api/v1/messages');
+
+        return $request->getStatusCode() === 200;
     }
 
     private function getBaseUrl(): string
     {
-        return ($this->ssl ? 'https://' : 'http://') . $this->host . ':' . $this->apiPort . '/api';
+        return ($this->ssl ? 'https://' : 'http://') . $this->host . ':' . $this->apiPort;
     }
 
     private function getSerializedUrlParameters(array $parameters = []): string
@@ -64,5 +88,21 @@ trait MailhogTesting
         }
 
         return $result;
+    }
+
+    private function instanceEmailMessage(array $message): EmailMessage
+    {
+        $from = $message['From']['Mailbox'] . '@' . $message['From']['Domain'];
+        $to = array_map(function ($to) {
+            return $to['Mailbox'] . '@' . $to['Domain'];
+        }, $message['To']);
+
+        return new EmailMessage(
+            $from,
+            $to,
+            $message['Content']['Headers']['Subject'][0],
+            $message['Content']['Body'],
+            []
+        );
     }
 }

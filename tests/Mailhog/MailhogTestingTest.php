@@ -4,6 +4,7 @@
 namespace Tests\Mailhog;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use Mailhog\MailhogTesting;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -13,10 +14,14 @@ class MailhogTestingTest extends TestCase
 {
     use MailhogTesting;
 
+    /**
+     * @throws GuzzleException
+     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->setUpMailhogEnviroment('localhost', 1025, 8025);
+        $this->clearInbox();
     }
 
     /**
@@ -89,7 +94,6 @@ class MailhogTestingTest extends TestCase
     }
 
     /**
-     * @throws Exception
      */
     public function testFailMailhogApi(): void
     {
@@ -99,6 +103,7 @@ class MailhogTestingTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetAllMessages(): void
     {
@@ -106,13 +111,19 @@ class MailhogTestingTest extends TestCase
         $this->sendMail('test2@test.test', 'Email subject2', 'This is the message of the email 2');
         $this->sendMail('test3@test.test', 'Email subject3', 'This is the message of the email 3');
 
-        // TODO
-        $this->assertTrue(true);
+        $result = $this->getAllMessages();
+
+        $this->assertEquals('Email subject3', $result[0]->getSubject());
+        $this->assertEquals('Email subject2', $result[1]->getSubject());
+        $this->assertEquals('Email subject1', $result[2]->getSubject());
     }
 
     public function testClearInbox(): void
     {
-        // TODO
+        $this->sendMail('test1@test.test', 'Email subject1', 'This is the message of the email 1');
+        $this->sendMail('test2@test.test', 'Email subject2', 'This is the message of the email 2');
+        $this->sendMail('test3@test.test', 'Email subject3', 'This is the message of the email 3');
+
         $this->assertTrue(true);
     }
 }
