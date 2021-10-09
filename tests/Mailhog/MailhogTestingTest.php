@@ -113,6 +113,7 @@ class MailhogTestingTest extends TestCase
 
         $result = $this->getAllMessages();
 
+        $this->assertCount(3,$result);
         $this->assertEquals('Email subject3', $result[0]->getSubject());
         $this->assertEquals('Email subject2', $result[1]->getSubject());
         $this->assertEquals('Email subject1', $result[2]->getSubject());
