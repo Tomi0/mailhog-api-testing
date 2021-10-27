@@ -2,6 +2,7 @@
   "name": "tomi0/mailhog-api-testing",
   "description": "Mailhog testing api.",
   "keywords": ["Testing", "Mailhog", "Api"],
+  "version": "1.0",
   "license": "MIT",
   "authors": [
     {
@@ -10,7 +11,7 @@
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^7.4",
     "guzzlehttp/guzzle": "^7.0"
   },
   "require-dev": {
