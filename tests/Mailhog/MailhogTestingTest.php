@@ -76,11 +76,21 @@ class MailhogTestingTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testMessageExistsByContent(): void
+    public function testMessageExistsByBodyContent(): void
     {
         $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
 
         $this->assertTrue($this->messageExistsByContent('This is the messa'));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testMessageExistsBySubjectContent(): void
+    {
+        $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
+
+        $this->assertTrue($this->messageExistsByContent('Email subje'));
     }
 
     /**
