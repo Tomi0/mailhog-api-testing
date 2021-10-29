@@ -2,12 +2,12 @@
 
 Test that your emails are sent
 
-##Install
+## Install
 ```composer
 composer require tomi0/mailhog-api-testing
 ```
 
-##Usage
+## Usage
 
 Use Mailhog testing trait in your test:
 ```php
