@@ -2,7 +2,7 @@
   "name": "tomi0/mailhog-api-testing",
   "description": "Mailhog testing api.",
   "keywords": ["Testing", "Mailhog", "Api"],
-  "version": "1.0",
+  "version": "1.2",
   "license": "MIT",
   "authors": [
     {
