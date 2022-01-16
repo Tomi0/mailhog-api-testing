@@ -47,6 +47,14 @@ trait MailhogTesting
     }
 
     /**
+     * @throws GuzzleException
+     */
+    public function messageExists(string $content): bool
+    {
+        return $this->messageExistsByContent($content);
+    }
+
+    /**
      * @return EmailMessage[]
      * @throws GuzzleException
      */
@@ -70,6 +78,14 @@ trait MailhogTesting
         $request = (new Client())->request('DELETE', $this->getBaseUrl() . '/api/v1/messages');
 
         return $request->getStatusCode() === 200;
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function emptyInbox(): bool
+    {
+        return $this->clearInbox();
     }
 
     private function getBaseUrl(): string

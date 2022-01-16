@@ -75,6 +75,7 @@ class MailhogTestingTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testMessageExistsByBodyContent(): void
     {
@@ -85,6 +86,7 @@ class MailhogTestingTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testMessageExistsBySubjectContent(): void
     {
@@ -95,12 +97,46 @@ class MailhogTestingTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     public function testMessageDoesNotExistByContent(): void
     {
         $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
 
         $this->assertFalse($this->messageExistsByContent('This is the message does not exist'));
+    }
+
+    /**
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function testMessageExistsByBody(): void
+    {
+        $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
+
+        $this->assertTrue($this->messageExists('This is the messa'));
+    }
+
+    /**
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function testMessageExistsBySubject(): void
+    {
+        $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
+
+        $this->assertTrue($this->messageExists('Email subje'));
+    }
+
+    /**
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function testMessageDoesNotExistBy(): void
+    {
+        $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
+
+        $this->assertFalse($this->messageExists('This is the message does not exist'));
     }
 
     /**
@@ -134,6 +170,23 @@ class MailhogTestingTest extends TestCase
         $this->assertNotEmpty($this->getAllMessages());
 
         $this->clearInbox();
+
+        $this->assertEmpty($this->getAllMessages());
+    }
+
+    /**
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function testEmptyInbox(): void
+    {
+        $this->sendMail('test1@test.test', 'Email subject1', 'This is the message of the email 1');
+        $this->sendMail('test2@test.test', 'Email subject2', 'This is the message of the email 2');
+        $this->sendMail('test3@test.test', 'Email subject3', 'This is the message of the email 3');
+
+        $this->assertNotEmpty($this->getAllMessages());
+
+        $this->emptyInbox();
 
         $this->assertEmpty($this->getAllMessages());
     }

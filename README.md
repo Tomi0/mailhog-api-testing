@@ -28,10 +28,12 @@ Available methods:
 ```php
 // Check if message exsits (return bool)
 $this->messageExistsByContent($content);
+$this->messageExists($content);
 
 // Get all messages (return EmailMessage[])
 $this->getAllMessages();
 
 // Clear inbox (return bool)
 $this->clearInbox();
+$this->emptyInbox();
 ```
