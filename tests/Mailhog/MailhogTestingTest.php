@@ -20,7 +20,7 @@ class MailhogTestingTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->setUpMailhogEnviroment('localhost', 1025, 8025);
+        $this->setUpMailhogEnviroment('mailhog-testing', 1025, 8025);
         $this->clearInbox();
     }
 
@@ -129,10 +129,36 @@ class MailhogTestingTest extends TestCase
     }
 
     /**
+     * @return void
      * @throws Exception
      * @throws GuzzleException
      */
-    public function testMessageDoesNotExistBy(): void
+    public function testMessageExistsBySubjectWithAccentMarkAndSpecialCharacters(): void
+    {
+        $this->sendMail('test@test.test', 'This is the message of the email with accent mark: áñä"\\', 'Something');
+
+        $this->getAllMessages();
+
+        $this->assertTrue($this->messageExists('This is the message of the email with accent mark: áñä"\\'));
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function testMessageExistsByBodyWithAccentMarkAndSpecialCharacters(): void
+    {
+        $this->sendMail('test@test.test', 'Some subject', 'This is the message of the email with accent mark: áñä"\\');
+
+        $this->assertTrue($this->messageExists('This is the message of the email with accent mark: áñä"\\'));
+    }
+
+    /**
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function testMessageDoesNotExist(): void
     {
         $this->sendMail('test@test.test', 'Email subject', 'This is the message of the email');
 

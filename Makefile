@@ -1,12 +1,17 @@
-.PHONY: run install test
+UID := $(shell id -u)
+GID := $(shell id -g)
+run := env UID=${UID} GID=${GID} docker-compose run --rm php-mailhog-testing
 
+
+.PHONY: test
 test:
-	docker run --rm -d --name umt -v $(PWD):/var/www/html -w /var/www/html ubuntu-mailhog-testing:latest "/root/go/bin/MailHog"
-	-docker exec umt php ./vendor/bin/phpunit --testdox tests
-	docker stop umt
-run:
-	docker run --rm --name umt -v $(PWD):/var/www/html -w /var/www/html --user $(id -u):$(id -g) ubuntu-mailhog-testing:latest $(cmd)
+	-$(run) ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml
+	env UID=${UID} GID=${GID} docker-compose down
+
+.PHONY: composer-install
 composer-install:
-	docker run --rm --name umt -v $(PWD):/var/www/html -w /var/www/html --user $(id -u):$(id -g) ubuntu-mailhog-testing:latest composer install
+	$(run) composer install
+
+.PHONY: docker-build
 docker-build:
-	docker build --rm --tag ubuntu-mailhog-testing:latest ./docker/Ubuntu
+	env UID=${UID} GID=${GID} docker-compose build
