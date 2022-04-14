@@ -12,6 +12,10 @@ test:
 composer-install:
 	$(run) composer install
 
+.PHONY: composer-update
+composer-update:
+	$(run) composer update
+
 .PHONY: docker-build
 docker-build:
 	env UID=${UID} GID=${GID} docker-compose build
