@@ -4,11 +4,26 @@ namespace Mailhog;
 
 class EmailMessage
 {
-    private string $from;
-    private array $to;
-    private string $subject;
-    private string $body;
-    private array $attachment;
+    /**
+     * @var string
+     */
+    private $from;
+    /**
+     * @var array
+     */
+    private $to;
+    /**
+     * @var string
+     */
+    private $subject;
+    /**
+     * @var string
+     */
+    private $body;
+    /**
+     * @var array
+     */
+    private $attachment;
 
     public function __construct(string $from, array $to, string $subject, string $body, array $attachment)
     {

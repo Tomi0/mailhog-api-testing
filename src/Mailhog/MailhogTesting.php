@@ -7,10 +7,22 @@ use GuzzleHttp\Exception\GuzzleException;
 
 trait MailhogTesting
 {
-    protected string $host;
-    protected int $mailPort;
-    protected int $apiPort;
-    protected bool $ssl;
+    /**
+     * @var string
+     */
+    protected $host;
+    /**
+     * @var int
+     */
+    protected $mailPort;
+    /**
+     * @var int
+     */
+    protected $apiPort;
+    /**
+     * @var bool
+     */
+    protected $ssl;
 
     /**
      * MailhogTesting constructor.

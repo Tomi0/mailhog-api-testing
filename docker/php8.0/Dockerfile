@@ -1,4 +1,6 @@
-FROM php:7.4-bullseye
+FROM composer:2.2.7 as composer
+
+FROM php:8.0-bullseye
 
 RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get -y install \
     sendmail \
