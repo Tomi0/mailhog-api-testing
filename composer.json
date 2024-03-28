@@ -2,7 +2,7 @@
   "name": "tomi0/mailhog-api-testing",
   "description": "Mailhog testing api.",
   "keywords": ["Testing", "Mailhog", "Api"],
-  "version": "2.0.0",
+  "version": "3.0.0",
   "license": "MIT",
   "authors": [
     {
@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "php": "^7.3|^7.4|^8.0|^8.1|^8.2",
+    "php": "^7.3|^7.4|^8.0|^8.1|^8.2|^8.3",
     "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
     "ext-json": "*"
   },
