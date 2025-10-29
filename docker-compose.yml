@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   mailhog-testing:
     image: mailhog/mailhog:latest
@@ -9,6 +7,19 @@ services:
       - "8025:8025"
     networks:
       - mailhog-api-testing-network
+  php8.4-mailhog-testing:
+    build:
+      context: .
+      dockerfile: docker/php8.4/Dockerfile
+    container_name: php8.4-mailhog-testing
+    user: "1000:1000"
+    working_dir: /var/www
+    volumes:
+      -   ./:/var/www
+    networks:
+      - mailhog-api-testing-network
+    depends_on:
+      - mailhog-testing
   php8.3-mailhog-testing:
     build:
       context: .

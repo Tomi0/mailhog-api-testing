@@ -19,4 +19,5 @@ test:
 	-docker-compose run --rm php8.1-mailhog-testing ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml
 	-docker-compose run --rm php8.2-mailhog-testing ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml
 	-docker-compose run --rm php8.3-mailhog-testing ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml
+	-docker-compose run --rm php8.4-mailhog-testing ./vendor/bin/phpunit --testdox --configuration ./phpunit.xml
 	docker-compose down
